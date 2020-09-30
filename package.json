@@ -4,7 +4,8 @@
   "description": "Caesar Cipher Encoding / Decoding Application",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node build/index.js"
+    "start": "tsc && node build/index.js",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
