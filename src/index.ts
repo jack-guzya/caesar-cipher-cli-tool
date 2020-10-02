@@ -17,8 +17,8 @@ program.storeOptionsAsProperties(false);
 program.version('1.0.0').description('Caesar cipher cli tool');
 
 program
-  .option('-a, --action <action>', 'select Encode / Decode action')
-  .option('-s, --shift <count>', 'shift letters')
+  .requiredOption('-a, --action <action>', 'select Encode / Decode action')
+  .requiredOption('-s, --shift <count>', 'shift letters')
   .option('-i, --input <path>', 'path of an input file')
   .option('-o, --output <path>', 'path of an output file');
 

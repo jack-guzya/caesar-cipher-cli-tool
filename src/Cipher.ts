@@ -22,9 +22,17 @@ class Cipher extends Transform {
       if (this.action !== 'encode' && this.action !== 'decode') {
         throw Error('Incorrect action parameter');
       }
+      console.log(this.shift);
+      if (Number.isNaN(this.shift) || this.shift <= 0) {
+        throw Error(
+          'Incorrect shift parameter: the value should be a number and be greater than null'
+        );
+      }
 
       const action = this.action === 'encode' ? actions.encode : actions.decode;
-      callback(null, action(chunk.toString('utf8'), this.shift));
+      const handledChunk = action(chunk.toString('utf8'), this.shift);
+
+      callback(null, handledChunk);
     } catch (err) {
       callback(err);
     }
