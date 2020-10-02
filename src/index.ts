@@ -1,18 +1,16 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-undef */
 import program from 'commander';
 import path from 'path';
-import {
-  Transform,
-  pipeline,
-  TransformCallback,
-  TransformOptions,
-} from 'stream';
+import { pipeline } from 'stream';
 import fs from 'fs';
 import { prompt } from 'inquirer';
+import Cipher, { TAction } from './Cipher';
 
-import actions from './actions';
+type TOptions = {
+  action: TAction;
+  shift: string;
+  input: string;
+  output: string;
+};
 
 program.storeOptionsAsProperties(false);
 
@@ -26,45 +24,9 @@ program
 
 program.parse(process.argv);
 
-type TAction = 'encode' | 'decode';
-
-type TOptions = {
-  action: 'encode' | 'decode';
-  shift: string;
-  input: string;
-  output: string;
-};
-
 const options = program.opts() as TOptions;
 
-class Cipher extends Transform {
-  constructor(
-    private action: TAction,
-    private shift: number,
-    opt?: TransformOptions
-  ) {
-    super(opt);
-
-    this.action = action;
-    this.shift = shift;
-  }
-
-  _transform(chunk: any, encode: BufferEncoding, callback: TransformCallback) {
-    try {
-      if (options.action !== 'encode' && options.action !== 'decode') {
-        throw Error('Incorrect action parameter');
-      }
-
-      const action = this.action === 'encode' ? actions.encode : actions.decode;
-      callback(null, action(chunk.toString('utf8'), this.shift));
-    } catch (err) {
-      callback(err);
-    }
-  }
-}
-
 const cipher = new Cipher(options.action, +options.shift);
-
 const inputPath = path.join(__dirname, options.input);
 const outputPath = path.join(__dirname, options.output);
 
