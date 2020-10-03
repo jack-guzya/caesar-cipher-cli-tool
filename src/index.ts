@@ -1,46 +1,33 @@
-import program from 'commander';
 import path from 'path';
 import { pipeline } from 'stream';
 import fs from 'fs';
-import { prompt } from 'inquirer';
-import Cipher, { TAction } from './Cipher';
+import chalk from 'chalk';
+// import { prompt } from 'inquirer';
+import logo from './logo';
+import Cipher from './Cipher';
+import initCli from './cli';
 
-type TOptions = {
-  action: TAction;
-  shift: string;
-  input: string;
-  output: string;
-};
-
-program.storeOptionsAsProperties(false);
-
-program.version('1.0.0').description('Caesar cipher cli tool');
-
-program
-  .requiredOption('-a, --action <action>', 'select Encode / Decode action')
-  .requiredOption('-s, --shift <count>', 'shift letters')
-  .option('-i, --input <path>', 'path of an input file')
-  .option('-o, --output <path>', 'path of an output file');
-
-program.parse(process.argv);
-
-const options = program.opts() as TOptions;
-
+const options = initCli();
 const cipher = new Cipher(options.action, +options.shift);
-const inputPath = path.join(__dirname, options.input);
-const outputPath = path.join(__dirname, options.output);
+
+const inputStream = () =>
+  options.input
+    ? fs.createReadStream(path.join(__dirname, options.input))
+    : process.stdin;
+const outputStream = () =>
+  options.output
+    ? fs.createWriteStream(path.join(__dirname, options.output))
+    : process.stdout;
 
 console.log(options);
 
-pipeline(
-  fs.createReadStream(inputPath),
-  cipher,
-  fs.createWriteStream(outputPath),
-  (err) => {
-    if (err) {
-      console.error(err.message);
-    } else {
-      console.log(`${options.action} succeeded!`);
-    }
+pipeline(inputStream(), cipher, outputStream(), (err) => {
+  if (err) {
+    console.error(chalk.red(`\n${err.message}`));
+  } else {
+    console.log(
+      chalk.blue(`\n${logo}`),
+      chalk.green(`\n\n\n${options.action} succeeded!`)
+    );
   }
-);
+});
