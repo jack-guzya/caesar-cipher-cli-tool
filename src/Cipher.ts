@@ -20,7 +20,10 @@ class Cipher extends Transform {
   _transform(chunk: any, encode: BufferEncoding, callback: TransformCallback) {
     try {
       const action = this.action === 'encode' ? actions.encode : actions.decode;
-      const handledChunk = action(chunk.toString('utf8'), this.shift);
+      const handledChunk = action(
+        chunk.toString('utf8'),
+        Math.round(this.shift)
+      );
 
       callback(null, handledChunk);
     } catch (err) {

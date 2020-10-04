@@ -25,17 +25,17 @@ const init = () => {
   const options = program.opts() as TOptions;
 
   if (options.action !== 'encode' && options.action !== 'decode') {
-    console.error(chalk.red('\nIncorrect action parameter\n'));
-    process.exit();
+    console.error(chalk.red('\nIncorrect action parameter'));
+    process.exit(1);
   }
 
   if (Number.isNaN(+options.shift) || +options.shift <= 0) {
     console.error(
       chalk.red(
-        '\nIncorrect shift parameter: the value should be a number and be greater than null\n'
+        '\nIncorrect shift parameter: the value should be a number and be greater than null'
       )
     );
-    process.exit();
+    process.exit(1);
   }
 
   return options;
