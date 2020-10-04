@@ -25,11 +25,10 @@ const inputStream = () => {
 
   const inputPath = path.resolve(__dirname, options.input);
   const exists = fs.existsSync(inputPath);
-  checkFileAccess(inputPath);
-
   if (!exists) {
     throw Error(`Invalid input file path: ${inputPath}`);
   }
+  checkFileAccess(inputPath);
 
   return fs.createReadStream(inputPath);
 };
@@ -41,11 +40,10 @@ const outputStream = () => {
 
   const outputPath = path.resolve(__dirname, options.output);
   const exists = fs.existsSync(outputPath);
-  checkFileAccess(outputPath);
-
   if (!exists) {
     throw Error(`Invalid output file path: ${outputPath}`);
   }
+  checkFileAccess(outputPath);
 
   return fs.createWriteStream(outputPath, {
     flags: 'a',
