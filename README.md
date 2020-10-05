@@ -1,6 +1,6 @@
 # Caesar cipher CLI tool
 
-**CLI tool that encodes and decodes a text by [Caesar cipher](https://en.wikipedia.org/wiki/Caesar_cipher)**.
+**CLI tool for encoding and decoding a text by [Caesar cipher](https://en.wikipedia.org/wiki/Caesar_cipher)**.
 
 CLI tool accepts 4 options (short alias and full name):
 
@@ -9,15 +9,23 @@ CLI tool accepts 4 options (short alias and full name):
 3.  **-o, --output**: an output file (a file should have read/write access)
 4.  **-a, --action**: an action encode/decode
 
-## Usage example:
+## Installation
 
-1. You need to run the TypeScript compiler first to create a build. A build will be created in the "build" folder (**"./build/index.js" is an entry point**)
+1. Install all dependencies:
+
+```bash
+npm i
+```
+
+2. **Important:** You need to run the TypeScript compiler to create a build. A build will be created in the "build" folder (**"./build/index.js" is an entry point**)
 
 ```bash
 npm run build
 ```
 
-2. To run the cipher tool:
+## Usage example
+
+To run the cipher tool:
 
 ```bash
 $ node ./build/index.js -a encode -s 7 -i "./input.txt" -o "./output.txt"
