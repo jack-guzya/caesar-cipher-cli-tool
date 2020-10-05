@@ -1,5 +1,6 @@
 import program from 'commander';
-import chalk from 'chalk';
+import path from 'path';
+import validation, { addErrorHandler } from './validation';
 import { TAction } from './Cipher';
 
 type TOptions = {
@@ -9,6 +10,8 @@ type TOptions = {
   output: string;
 };
 
+const parsePath = (filePath: string) => path.resolve(__dirname, filePath);
+
 program.storeOptionsAsProperties(false);
 
 program.version('1.0.0').description('Caesar cipher cli tool');
@@ -16,29 +19,27 @@ program.version('1.0.0').description('Caesar cipher cli tool');
 program
   .requiredOption('-a, --action <action>', 'select Encode / Decode action')
   .requiredOption('-s, --shift <count>', 'shift letters')
-  .option('-i, --input <path>', 'path of an input file')
-  .option('-o, --output <path>', 'path of an output file');
+  .option('-i, --input <path>', 'path of an input file', parsePath)
+  .option('-o, --output <path>', 'path of an output file', parsePath);
 
 const init = () => {
   program.parse(process.argv);
-
   const options = program.opts() as TOptions;
 
-  if (options.action !== 'encode' && options.action !== 'decode') {
-    console.error(chalk.red('\nIncorrect action parameter'));
-    process.exit(1);
+  validation.checkActionParameter(options.action);
+  validation.checkShiftParameter(options.shift);
+
+  if ('input' in options) {
+    validation.checkFileExistence(options.input);
+    validation.checkReadFileAccess(options.input);
   }
 
-  if (Number.isNaN(+options.shift) || +options.shift <= 0) {
-    console.error(
-      chalk.red(
-        '\nIncorrect shift parameter: the value should be a number and be greater than null'
-      )
-    );
-    process.exit(1);
+  if ('output' in options) {
+    validation.checkFileExistence(options.output);
+    validation.checkWriteFileAccess(options.output);
   }
 
   return options;
 };
 
-export default init;
+export default addErrorHandler(init);
