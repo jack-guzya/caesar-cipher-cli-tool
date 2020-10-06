@@ -4,9 +4,8 @@
   "description": "Caesar Cipher Encoding / Decoding Application",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && node build/index.js",
-    "cipher": "node build/index.js",
-    "prebuild": "rimraf build",
+    "start": "npm run build && node cipher",
+    "prebuild": "rimraf cipher",
     "build": "tsc"
   },
   "repository": {

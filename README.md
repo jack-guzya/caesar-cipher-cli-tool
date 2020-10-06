@@ -17,7 +17,7 @@ CLI tool accepts 4 options (short alias and full name):
 npm i
 ```
 
-2. **Important:** You need to run the TypeScript compiler to create a build. A build will be created in the "build" folder (**"./build/index.js" is an entry point**)
+2. **Important:** You need to run the TypeScript compiler to create a build. A build will be created in the "cipher" folder (**"./cipher/index.js" is an entry point**)
 
 ```bash
 npm run build
@@ -28,21 +28,15 @@ npm run build
 To run the cipher tool:
 
 ```bash
-$ node ./build/index.js -a encode -s 7 -i "./input.txt" -o "./output.txt"
+$ node cipher -a encode -s 7 -i "./input.txt" -o "./output.txt"
 ```
 
 ```bash
-$ node ./build/index.js --action encode --shift 7 --input plain.txt --output encoded.txt
+$ node cipher --action encode --shift 7 --input plain.txt --output encoded.txt
 ```
 
 ```bash
-$ node ./build/index.js --action decode --shift 7 --input decoded.txt --output plain.txt
-```
-
-Or:
-
-```bash
-$ npm run cipher -- -a encode -s 7 -i "./input.txt" -o "./output.txt"
+$ node cipher --action decode --shift 7 --input decoded.txt --output plain.txt
 ```
 
 > input.txt
